@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name = "vierport"
+content = "width=device-width, initial-scale=1">
+<title>События мыши на Canvas</title>
+       
+<head>
+   <style>
+      * { padding: 0; margin: 10px auto; }
+      canvas { background: #000000; display: block; margin: 0 auto;
+        width: 70%;
+        height: 70%;
+       }
+    .info {text-align: center;}
+  </style>       
+</head>
+
+<body>
+
+<canvas id="canvas"></canvas>
+<br>
+<div class = "info">
+  <p id = "mouseX"></p>
+  <p id = "mouseY"></p>
+  <p id = "clickX"></p>
+  <p id = "clickY"></p>
+  <p id = "Whell"></p>
+</div>
+
+
+<script>
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+ctx.canvas.width  = window.innerWidth*0.7;//под размеры окна делаем
+ctx.canvas.height = window.innerHeight*0.7;
+
+
+//Координаты движения мыши относительно канваса
+canvas.onmousemove = function(e) {
+  var mouseX = parseInt(e.clientX - this.offsetLeft);
+  var mouseY = parseInt(e.clientY - this.offsetTop);
+  document.getElementById('mouseX').innerHTML = "Координаты курсора по оси X: " + mouseX;
+  document.getElementById('mouseY').innerHTML = "Координаты курсора по оси Y: " + mouseY;
+  }
+
+//Координаты клика относительно канваса
+canvas.onmousedown = function(e) {
+  var clickX = parseInt(e.clientX - this.offsetLeft);
+  var clickY = parseInt(e.clientY - this.offsetTop);
+  document.getElementById('clickX').innerHTML = "Координаты клика по оси X: " + clickX;
+  document.getElementById('clickY').innerHTML = "Координаты клика по оси Y: " + clickY;
+  }
+
+//Инициализируем прокрутку колесиком мыши
+ function addOnWheel(elem, handler) {
+      if (elem.addEventListener) {
+        if ('onwheel' in document) {
+          // IE
+          elem.addEventListener("wheel", handler);
+        } else if ('onmousewheel' in document) {
+          elem.addEventListener("mousewheel", handler);
+        } else {
+          // Firefox
+          elem.addEventListener("MozMousePixelScroll", handler);
+        }
+      } else { // IE8-
+        text.attachEvent("onmousewheel", handler);
+      }
+    }
+
+var scale = 0;//в эту переменную записываем шаги прокрутки. По умолчания с 0 начинаем
+
+//Добавляем событие прокрутки
+addOnWheel(canvas, function(e) {
+  var delta = e.deltaY || e.detail || e.wheelDelta;
+if (delta > 0) {scale -= 1;}
+else {scale += 1;}
+ 
+document.getElementById('Whell').innerHTML = "Прокрутка колесика мыши: " + scale;
+
+ e.preventDefault();
+});
+
+
+</script>
+
+
+
+</body> 
+</html>
